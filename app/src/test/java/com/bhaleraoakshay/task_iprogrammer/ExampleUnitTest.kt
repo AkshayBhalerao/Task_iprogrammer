@@ -1,8 +1,8 @@
 package com.bhaleraoakshay.task_iprogrammer
 
-import org.junit.Test
-
+import com.bhaleraoakshay.task_iprogrammer.utils.InputValidator
 import org.junit.Assert.*
+import org.junit.Test
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -14,4 +14,17 @@ class ExampleUnitTest {
     fun addition_isCorrect() {
         assertEquals(4, 2 + 2)
     }
+
+    @Test
+    fun InputValidator_EmptyString_ReturnsFalse() {
+        assertFalse(InputValidator.isValidCity(""))
+    }
+
+    @Test
+    fun CityValidator_NullString_ReturnsFalse() {
+        assertFalse(InputValidator.isValidCity(null))
+    }
+
+
+
 }
