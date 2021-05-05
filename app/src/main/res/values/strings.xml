@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Task_iprogrammer</string>
+    <string name="degree_celsius_symbol">°C</string>
+    <string name="description_weather_condition_icon">weather condition icon</string>
+    <string name="label_sunrise">Sunrise</string>
+    <string name="label_sunset">Sunset</string>
 </resources>

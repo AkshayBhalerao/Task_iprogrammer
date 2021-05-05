@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="LabelStyle" parent="TextAppearance.MaterialComponents.Body1">
+        <item name="android:textColor">@color/purple_700</item>
+    </style>
+
+    <style name="DefaultTextStyle" parent="TextAppearance.MaterialComponents.Body1">
+
+    </style>
+</resources>
