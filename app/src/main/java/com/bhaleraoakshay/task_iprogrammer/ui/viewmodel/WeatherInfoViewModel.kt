@@ -23,21 +23,6 @@ class WeatherInfoViewModel : ViewModel() {
     val weatherInfoFailureLiveData = MutableLiveData<String>()
     val progressBarLiveData = MutableLiveData<Boolean>()
 
-
-    fun getCityList(model: WeatherInfoShowModel) {
-        model.getCityList(object :
-            RequestCompleteListener<MutableList<City>> {
-            override fun onRequestSuccess(data: MutableList<City>) {
-                cityListLiveData.postValue(data)
-            }
-
-            override fun onRequestFailed(errorMessage: String) {
-                cityListFailureLiveData.postValue(errorMessage)
-            }
-        })
-    }
-
-
     fun getWeatherInfo(cityName: String, model: WeatherInfoShowModel) {
 
         progressBarLiveData.postValue(true)

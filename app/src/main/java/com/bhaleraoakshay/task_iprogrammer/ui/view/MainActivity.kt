@@ -23,11 +23,12 @@ import com.bhaleraoakshay.task_iprogrammer.ui.model.data_class.WeatherData
 import com.bhaleraoakshay.task_iprogrammer.ui.viewmodel.WeatherInfoViewModel
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
-import java.util.*
+import com.google.gson.reflect.TypeToken
+import java.lang.reflect.Type
+import kotlin.collections.ArrayList
 
 
 class MainActivity : AppCompatActivity() {
-
 
     private lateinit var model: WeatherInfoShowModel
     private lateinit var viewModel: WeatherInfoViewModel
@@ -36,6 +37,7 @@ class MainActivity : AppCompatActivity() {
     private var cityList: MutableList<City> = mutableListOf()
 
     var cities = ArrayList<String>()
+
     private lateinit var autotextView: AutoCompleteTextView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,18 +47,23 @@ class MainActivity : AppCompatActivity() {
         model = WeatherInfoShowModelImpl(applicationContext)
         viewModel = ViewModelProviders.of(this).get(WeatherInfoViewModel::class.java)
         autotextView = findViewById<AutoCompleteTextView>(R.id.autoCompleteTextView_serachPlace)
+        cities = loadSharedPreferencesLogList(this)
 
+        val arrayAdapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, cities)
+        autotextView.run {
+            setAdapter(arrayAdapter)
+        }
+        arrayAdapter.notifyDataSetChanged();
         setLiveDataListeners()
         setViewClickListener()
 
-
-        viewModel.getCityList(model)
     }
 
     private fun setViewClickListener() {
         autotextView.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
                 Log.d("beforeTextChanged", s.toString())
+
             }
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
@@ -69,13 +76,14 @@ class MainActivity : AppCompatActivity() {
         })
 
         findViewById<Button>(R.id.button_actionSearch)?.setOnClickListener {
-            val enteredText = "Selected " + autotextView.text.toString()
+            val enteredText =  autotextView.text.toString()
 
             if(cities.contains(enteredText)){
                 Log.d("TAG", "item already present in list")
             }
             else{
                 cities.add(enteredText)
+
                 saveSharedPreferencesLogList(this, cities)
             }
 
@@ -89,7 +97,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun setLiveDataListeners() {
         viewModel.cityListLiveData.observe(this,
-            { cities -> setCityListData(cities) })
+            { cities ->
+                setCityListData(cities) })
 
         viewModel.cityListFailureLiveData.observe(this, Observer { errorMessage ->
             Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show()
@@ -116,8 +125,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun setCityListData(cityList: MutableList<City>) {
         this.cityList = cityList
-        val arrayAdapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, this.cityList)
-        autotextView.setAdapter(arrayAdapter)
+          //  this.cities = cityList
 
     }
 
@@ -143,4 +151,20 @@ class MainActivity : AppCompatActivity() {
         prefsEditor.putString("myJson", json)
         prefsEditor.apply()
     }
+
+    private fun loadSharedPreferencesLogList(context: Context): ArrayList<String> {
+        var savedCity: ArrayList<String> = ArrayList()
+        val mPrefs = context.getSharedPreferences("CityList", Context.MODE_PRIVATE)
+        val gson = Gson()
+        val json = mPrefs.getString("myJson", "")
+        savedCity = if (json!!.isEmpty()) {
+            ArrayList()
+        } else {
+            val type: Type = object : TypeToken<ArrayList<String?>?>() {}.type
+            gson.fromJson(json, type)
+        }
+        Log.d("Saved list", "loadSharedPreferencesLogList: ${savedCity.toString()}")
+        return savedCity as ArrayList<String>
+    }
+
 }

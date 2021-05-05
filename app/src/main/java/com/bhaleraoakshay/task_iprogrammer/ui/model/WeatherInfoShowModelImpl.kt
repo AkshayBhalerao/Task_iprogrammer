@@ -19,7 +19,7 @@ import java.lang.reflect.Type
 
 class WeatherInfoShowModelImpl(private val context: Context): WeatherInfoShowModel {
 
-    override fun getCityList(callback: RequestCompleteListener<MutableList<City>>) {
+  /*  override fun getCityList(callback: RequestCompleteListener<MutableList<City>>) {
         try {
 
             val cityList: MutableList<City> = loadSharedPreferencesLogList(context)
@@ -29,7 +29,7 @@ class WeatherInfoShowModelImpl(private val context: Context): WeatherInfoShowMod
             e.printStackTrace()
             callback.onRequestFailed(e.localizedMessage!!)
         }
-    }
+    }*/
 
 
      override fun getWeatherInfo(
@@ -38,7 +38,7 @@ class WeatherInfoShowModelImpl(private val context: Context): WeatherInfoShowMod
      ) {
 
         val apiInterface: ApiInterface = RetrofitClient.client.create(ApiInterface::class.java)
-        val call: Call<WeatherInfoResponse> = apiInterface.callApiForWeatherInfo("Pune")
+        val call: Call<WeatherInfoResponse> = apiInterface.callApiForWeatherInfo(cityName)
 
         call.enqueue(object : Callback<WeatherInfoResponse> {
 
@@ -60,7 +60,7 @@ class WeatherInfoShowModelImpl(private val context: Context): WeatherInfoShowMod
 
 
 
-    private fun loadSharedPreferencesLogList(context: Context): MutableList<City> {
+  /*  private fun loadSharedPreferencesLogList(context: Context): MutableList<City> {
         var savedCity: List<City?> = ArrayList()
         val mPrefs = context.getSharedPreferences("CityList", Context.MODE_PRIVATE)
         val gson = Gson()
@@ -72,5 +72,5 @@ class WeatherInfoShowModelImpl(private val context: Context): WeatherInfoShowMod
             gson.fromJson(json, type)
         }
         return savedCity as MutableList<City>
-    }
+    }*/
  }
