@@ -15,7 +15,6 @@
         android:layout_marginTop="35dp"
         android:layout_marginBottom="271dp"
         android:hint="Enter City"
-        app:layout_constraintBottom_toTopOf="@+id/textView"
         app:layout_constraintEnd_toStartOf="@+id/button_actionSearch"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -144,8 +143,5 @@
         android:visibility="gone"
         tools:visibility="visible"
         app:constraint_referenced_ids="constraintlayout_basic" />
-
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
